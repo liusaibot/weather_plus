@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:weather_plus/models/city.dart';
+import 'package:weather_plus/models/weather_api.dart';
+import 'package:weather_plus/services/weather_service.dart';
 
 final FirebaseDatabase firebaseDatabase = FirebaseDatabase.instance;
 
@@ -14,31 +16,33 @@ class _SearchPageState extends State<SearchPage> {
   final List<City> _cityList = <City>[];
   String cityName = '';
   String foundCity = 'NotFound';
+  WeatherAPI weatherAPI = WeatherAPI();
 
   @override
   void initState() {
-    firebaseDatabase.reference()
-                  .child('cities')
-                  //.orderByChild('id')
-                  //.equalTo(707860)
-                  .limitToLast(10)
-                  .once()
-                  .then((DataSnapshot dataSnapshot){
-                    Map<dynamic, dynamic> cities = dataSnapshot.value;
-                    //List cities = data.value;
-                    //print('value is: $cities');
-                    cities.forEach((key, city){
-                      print(city["name"]);
-                      setState(() {
-                       _cityList.add(City.map(city));
-                      });
-                    });
+    // firebaseDatabase.reference()
+    //               .child('cities')
+    //               //.orderByChild('id')
+    //               //.equalTo(707860)
+    //               .limitToLast(10)
+    //               .once()
+    //               .then((DataSnapshot dataSnapshot){
+    //                 Map<dynamic, dynamic> cities = dataSnapshot.value;
+    //                 //List cities = data.value;
+    //                 //print('value is: $cities');
+    //                 cities.forEach((key, city){
+    //                   print(city["name"]);
+    //                   setState(() {
+    //                    _cityList.add(City.map(city));
+    //                   });
+    //                 });
 
-                    //print("Records: ${list.toString()}");
-                  });
+    //                 //print("Records: ${list.toString()}");
+    //               });
 
     //print(_cityList[1].name);
-
+    var response = WeatherService.getData();
+    print(weatherAPI.baseURL);
     super.initState();
   }
 
